@@ -12,7 +12,10 @@ VOLUME ["/etc/kong/"]
 COPY config.docker/kong.yml /etc/kong/kong.yml
 
 # Set the database to use
-RUN if [ -z "$DATABASE" ]; then DATABASE="cassandra"; fi; echo -e 'database: "'$DATABASE'"' >> /etc/kong/kong.yml;
+RUN if [ -z "$DATABASE" ]; then \
+  DATABASE="cassandra"; \
+fi; \
+echo -e 'database: "'$DATABASE'"' >> /etc/kong/kong.yml;
 
 # Set the cluster "advertise" property either by a set environment variable, or by auto-detecting the IP address of the container
 RUN if [ -z "$ADVERTISE" ]; then \

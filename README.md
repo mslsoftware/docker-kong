@@ -44,14 +44,14 @@ It's up to you to decide which datastore between Cassandra or PostgreSQL you wan
 Start a Cassandra container by executing:
 
 ```shell
-$ docker run -d -p 9042:9042 --name cassandra cassandra:2.2.5
+$ docker run -d -p 9042:9042 --name cassandra cassandra:2.2
 ```
 
 Once Cassandra is running, we can start a Kong container and link it to the Cassandra container:
 
 ```shell
 $ docker run -d --name kong \
-    -e "DATABASE=cassandra"
+    -e "DATABASE=cassandra" \
     --link cassandra:cassandra \
     -p 8000:8000 \
     -p 8443:8443 \
@@ -74,7 +74,7 @@ Once PostgreSQL is running, we can start a Kong container and link it to the Cas
 
 ```shell
 $ docker run -d --name kong \
-    -e "DATABASE=postgres"
+    -e "DATABASE=postgres" \
     --link postgres:postgres \
     -p 8000:8000 \
     -p 8443:8443 \
