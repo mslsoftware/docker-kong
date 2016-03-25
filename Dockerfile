@@ -1,7 +1,7 @@
 FROM centos:7
 MAINTAINER Marco Palladino, marco@mashape.com
 
-ENV KONG_VERSION 0.7.0
+ENV KONG_VERSION 0.8.0rc1
 
 RUN yum install -y epel-release
 RUN yum install -y https://github.com/Mashape/kong/releases/download/$KONG_VERSION/kong-$KONG_VERSION.el7.noarch.rpm && \
@@ -10,6 +10,15 @@ RUN yum install -y https://github.com/Mashape/kong/releases/download/$KONG_VERSI
 VOLUME ["/etc/kong/"]
 
 COPY config.docker/kong.yml /etc/kong/kong.yml
+
+# Set the database to use
+RUN if [ -z "$DATABASE" ]; then DATABASE="cassandra"; fi; echo -e 'database: "'$DATABASE'"' >> /etc/kong/kong.yml;
+
+# Set the cluster "advertise" property either by a set environment variable, or by auto-detecting the IP address of the container
+RUN if [ -z "$ADVERTISE" ]; then \
+  hostname=`hostname` && ADVERTISE=`awk '/^[[:space:]]*($|#)/{next} /'$hostname'/{print $1; exit}' /etc/hosts` && ip=$ip":7946"; \
+fi; \
+echo -e 'cluster:\n  advertise: "'$ADVERTISE'"' >> /etc/kong/kong.yml;
 
 CMD kong start
 

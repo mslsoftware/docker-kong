@@ -1,4 +1,7 @@
-database: cassandra
+postgres:
+  host: "postgres"
+  port: 5432
+  database: kong
 cassandra:
   contact_points:
     - "cassandra:9042"
@@ -6,7 +9,7 @@ nginx: |
   {{user}}
   worker_processes auto;
   error_log logs/error.log error;
-  daemon off;
+  daemon on;
 
   worker_rlimit_nofile {{auto_worker_rlimit_nofile}};
 
