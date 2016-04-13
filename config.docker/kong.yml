@@ -1,7 +1,7 @@
 database: cassandra
 cassandra:
   contact_points:
-    - "cassandra:9042"
+    - "cassandra.apigateway-opendev.myalauda.cn:11921"
 nginx: |
   {{user}}
   worker_processes auto;
